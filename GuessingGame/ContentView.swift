@@ -18,18 +18,23 @@ struct ContentView: View {
             
             VStack {
                 
-                Text("Guessing Game")
-                
                 Text("I'm thinking of a number between 1 and 100. Guess what it is!")
+                    .font(.title)
+                    .padding(.bottom, 20.0)
                 
                 TextField("Enter your guess here",
                           text: $theUserGuess)
+                    .padding(.horizontal, 25.0)
                 
                 Button("Submit Guess") {
                     // Check the guess
                 }
+                .padding(.vertical)
                 
                 Text("You guessed \(theUserGuess).")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                
+                Spacer()
                 
             }
             .navigationTitle("Guessing Game")

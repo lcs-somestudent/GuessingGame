@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    // The guess made by the user
-    @State private var theUserGuess = ""
-    
+        
     // The number that the user should guess
     let target = Int.random(in: 1...100)
     
     // Feedback to the user
     @State private var feedback = ""
+    
+    // The current guess made by the user
+    @State private var theUserGuess = ""
+
+    // The prior guess made by the user
+    @State private var priorGuess = ""
     
     var body: some View {
         
@@ -40,8 +43,8 @@ struct ContentView: View {
                 .padding(.vertical)
                 
                 // Only show output once input has been provided
-                if theUserGuess.count > 0 {
-                    Text("You guessed \(theUserGuess)")
+                if priorGuess.count > 0 {
+                    Text("Your last guess was \(priorGuess).")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .padding(.bottom)
 
@@ -84,6 +87,10 @@ struct ContentView: View {
         default:
             feedback = "Guess higher next time."
         }
+        
+        // Reset the user's guess
+        priorGuess = theUserGuess
+        theUserGuess = ""
         
     }
     

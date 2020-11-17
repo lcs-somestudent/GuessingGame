@@ -75,7 +75,15 @@ struct ContentView: View {
         }
         
         // Is the guess correct?
-        feedback = "You made a guess."
+        let range = givenInteger - target
+        switch range {
+        case 1...:
+            feedback = "Guess lower next time."
+        case 0:
+            feedback = "That's correct! Well done."
+        default:
+            feedback = "Guess higher next time."
+        }
         
     }
     

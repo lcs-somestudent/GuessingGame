@@ -31,6 +31,7 @@ struct ContentView: View {
                 TextField("Enter your guess here",
                           text: $theUserGuess)
                     .padding(.horizontal, 25.0)
+                    .font(.title)
                 
                 Button("Check my guess") {
                     // Check the guess

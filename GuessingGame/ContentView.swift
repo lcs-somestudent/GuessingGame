@@ -32,17 +32,23 @@ struct ContentView: View {
                           text: $theUserGuess)
                     .padding(.horizontal, 25.0)
                 
-                Button("Submit Guess") {
+                Button("Check my guess") {
                     // Check the guess
                     checkGuess()
                 }
                 .padding(.vertical)
                 
-                Text("You guessed \(theUserGuess)")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                // Only show output once input has been provided
+                if theUserGuess.count > 0 {
+                    Text("You guessed \(theUserGuess)")
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .padding(.bottom)
 
-                Text("\(feedback)")
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    Text("\(feedback)")
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.center)
+                }
+                
 
                 Spacer()
                 

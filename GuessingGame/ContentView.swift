@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
         
     // The number that the user should guess
-    let target = Int.random(in: 1...100)
+    @State private var target = Int.random(in: 1...100)
     
     // Feedback to the user
     @State private var feedback = ""
@@ -20,6 +20,9 @@ struct ContentView: View {
 
     // The prior guess made by the user
     @State private var priorGuess = ""
+    
+    // Keep track of whether game is over
+    @State private var gameOver = false
     
     var body: some View {
         
@@ -35,12 +38,14 @@ struct ContentView: View {
                           text: $theUserGuess)
                     .padding(.horizontal, 25.0)
                     .font(.title)
-                
+                    .disabled(gameOver)
+
                 Button("Check my guess") {
                     // Check the guess
                     checkGuess()
                 }
                 .padding(.vertical)
+                .disabled(gameOver)
                 
                 // Only show output once input has been provided
                 if priorGuess.count > 0 {
@@ -51,6 +56,17 @@ struct ContentView: View {
                     Text("\(feedback)")
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .multilineTextAlignment(.center)
+                }
+                
+                // Only show the new game button when the current game is over
+                if gameOver {
+                    
+                    Button("New game") {
+                        // Reset the game
+                        resetGame()
+                    }
+                    .padding(.vertical)
+                    
                 }
                 
 
@@ -84,6 +100,7 @@ struct ContentView: View {
             feedback = "Guess lower next time."
         case 0:
             feedback = "That's correct! Well done."
+            gameOver = true
         default:
             feedback = "Guess higher next time."
         }
@@ -91,6 +108,20 @@ struct ContentView: View {
         // Reset the user's guess
         priorGuess = theUserGuess
         theUserGuess = ""
+        
+    }
+    
+    // Reset the game
+    func resetGame() {
+        
+        // Pick a new number
+        target = Int.random(in: 1...100)
+        
+        // Reset the guess
+        theUserGuess = ""
+        priorGuess = ""
+        
+        gameOver = false
         
     }
     

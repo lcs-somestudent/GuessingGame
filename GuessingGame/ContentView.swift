@@ -52,6 +52,7 @@ struct ContentView: View {
                     .padding(.horizontal, 25.0)
                     .font(.title)
                     .disabled(gameOver)
+                    .keyboardType(.numberPad)
 
                 Button("Check my guess") {
                     // Check the guess

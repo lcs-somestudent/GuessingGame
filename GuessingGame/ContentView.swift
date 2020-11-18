@@ -45,6 +45,7 @@ struct ContentView: View {
                 Text("\(welcome)")
                     .font(.title)
                     .padding(.bottom, 20.0)
+                    .foregroundColor(gameOver ? .secondary : .primary)
                 
                 TextField("Enter your guess here",
                           text: $theUserGuess)

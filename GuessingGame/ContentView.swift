@@ -6,8 +6,20 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
+    
+    // This object named 'synthesizer', an instance of the class 'AVSpeechSynthesizer',
+    // does the heavy lifting of converting text to speech
+    private let synthesizer = AVSpeechSynthesizer()
+    
+    // This object, named 'welcomeUtterance', an instance of the class AVSpeechUtterance,
+    // will store the text to be spoken aloud
+    @State private var utterance = AVSpeechUtterance()
+    
+    // The welcome message
+    private let welcome = "I'm thinking of a number between 1 and 100. Guess what it is!"
         
     // The number that the user should guess
     @State private var target = Int.random(in: 1...100)
@@ -30,7 +42,7 @@ struct ContentView: View {
             
             VStack {
                 
-                Text("I'm thinking of a number between 1 and 100. Guess what it is!")
+                Text("\(welcome)")
                     .font(.title)
                     .padding(.bottom, 20.0)
                 
@@ -74,6 +86,15 @@ struct ContentView: View {
                 
             }
             .navigationTitle("Guessing Game")
+            .onAppear() {
+                
+                // Set the phrase that will be read aloud
+                utterance = AVSpeechUtterance(string: welcome)
+                
+                // Speak the message
+                synthesizer.speak(utterance)
+                
+            }
             
         }
         

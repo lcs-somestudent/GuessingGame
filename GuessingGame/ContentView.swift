@@ -36,6 +36,9 @@ struct ContentView: View {
     // Keep track of whether game is over
     @State private var gameOver = false
     
+    // Show a sheet for controlling settings
+    @State private var showingSettings = false
+    
     var body: some View {
         
         NavigationView {
@@ -88,6 +91,17 @@ struct ContentView: View {
                 
             }
             .navigationTitle("Guessing Game")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    
+                    Button(action: {
+                        showingSettings = true
+                    }, label: {
+                        Image(systemName: "gearshape")
+                    })
+                    
+                }
+            }
             .onAppear() {
 
                 // Speak the welcome message
@@ -95,7 +109,9 @@ struct ContentView: View {
             }
             
         }
-        
+        .sheet(isPresented: $showingSettings) {
+            Settings()
+        }
         
     }
     

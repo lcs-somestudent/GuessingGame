@@ -116,13 +116,16 @@ struct ContentView: View {
         switch range {
         case 1...:
             feedback = "Guess lower next time."
+            say(message: "Lower")
         case 0:
             feedback = "That's correct! Well done."
+            say(message: "You got it!")
             gameOver = true
         default:
             feedback = "Guess higher next time."
+            say(message: "Higher")
         }
-        
+                
         // Reset the user's guess
         priorGuess = theUserGuess
         theUserGuess = ""

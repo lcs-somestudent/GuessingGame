@@ -88,13 +88,9 @@ struct ContentView: View {
             }
             .navigationTitle("Guessing Game")
             .onAppear() {
-                
-                // Set the phrase that will be read aloud
-                utterance = AVSpeechUtterance(string: welcome)
-                
-                // Speak the message
-                synthesizer.speak(utterance)
-                
+
+                // Speak the welcome message
+                say(message: welcome)
             }
             
         }
@@ -143,10 +139,24 @@ struct ContentView: View {
         theUserGuess = ""
         priorGuess = ""
         
+        // New game
         gameOver = false
+
+        // Speak the welcome message
+        say(message: welcome)
         
     }
     
+    // Say something
+    func say(message: String) {
+
+        // Set the phrase that will be read aloud
+        utterance = AVSpeechUtterance(string: message)
+        
+        // Speak the message
+        synthesizer.speak(utterance)
+
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

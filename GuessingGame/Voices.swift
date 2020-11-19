@@ -6,10 +6,20 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct Voices: View {
     var body: some View {
-        Text("Select voices...")
+        
+        List(AVSpeechSynthesisVoice.speechVoices(),
+             id: \.self) { voice in
+            
+            Text("\(voice.name)")
+            
+        }
+        .navigationTitle("Voice")
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
 }
 

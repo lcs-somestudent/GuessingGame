@@ -14,9 +14,15 @@ struct ContentView: View {
     // does the heavy lifting of converting text to speech
     private let synthesizer = AVSpeechSynthesizer()
     
-    // This object, named 'welcomeUtterance', an instance of the class AVSpeechUtterance,
+    // This object, named 'utterance', an instance of the class AVSpeechUtterance,
     // will store the text to be spoken aloud
     @State private var utterance = AVSpeechUtterance()
+    
+    // What voice to use for speech
+    @State private var voiceToUse: AVSpeechSynthesisVoice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")!
+    
+    // The position of the Samantha voice in the list of voices for use with English
+    @State private var selectedVoice: Int = 11
     
     // The welcome message
     @State private var welcome = ""
@@ -42,7 +48,7 @@ struct ContentView: View {
     // Whether to speak feedback
     @State private var speakingFeedback = true
 
-    // Maximum range for guesses
+    // Maximum value for range of guesses
     @State private var maximumValue: Float = 100
     @State private var priorMaximumValue: Float = 100
     
@@ -120,6 +126,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showingSettings, onDismiss: {
 
+            // DEBUG
 //            print("maximumValue is \(maximumValue)")
 //            print("are we speaking feedback? \(speakingFeedback)")
 
@@ -139,7 +146,9 @@ struct ContentView: View {
             
         }) {
             Settings(speakingFeedback: $speakingFeedback,
-                     maximumValue: $maximumValue)
+                     maximumValue: $maximumValue,
+                     voiceToUse: $voiceToUse,
+                     selectedVoice: $selectedVoice)
         }
         
     }
@@ -203,6 +212,9 @@ struct ContentView: View {
 
             // Set the phrase that will be read aloud
             utterance = AVSpeechUtterance(string: message)
+            
+            // Set the voice
+            utterance.voice = voiceToUse
             
             // Speak the message
             synthesizer.speak(utterance)

@@ -22,9 +22,8 @@ struct ContentView: View {
     @State private var voiceToUse: AVSpeechSynthesisVoice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")!
     
     // The position of the Samantha voice in the list of voices for use with English, when sorted
-    // NOTE: This is not awesome 
-    @State private var selectedVoice: Int = 12
-    
+    @State private var selectedVoice: Int = 0
+
     // The welcome message
     @State private var welcome = ""
         
@@ -117,11 +116,27 @@ struct ContentView: View {
             }
             .onAppear() {
                 
+                // Find the position of the Samantha voice in the list of voices
+                print("Selected voice starts as: \(selectedVoice)")
+                selectedVoice = AVSpeechSynthesisVoice.speechVoices().filter { (voice) -> Bool in
+                    if voice.language.contains("en-") {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                .sorted(by: { (voice1, voice2) -> Bool in
+                    return voice1.name < voice2.name
+                })
+                .firstIndex(of: AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")!)!
+                print("Selected voice now is: \(selectedVoice)")
+
                 // Set the welcome value
                 welcome = "I'm thinking of a number between 1 and \(Int(maximumValue)). Guess what it is!"
 
                 // Speak the welcome message
                 say(message: welcome)
+                
             }
             
         }

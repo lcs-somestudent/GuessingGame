@@ -63,7 +63,7 @@ struct Settings: View {
                             }
                         }
                         
-                        Text("You'll be guessing a value between 1 and \(Int(maximumValue)).")
+                        Text("Guess values between 1 and \(Int(maximumValue)).")
                             .font(.subheadline)
                             .padding(.vertical, 5.0)
                         

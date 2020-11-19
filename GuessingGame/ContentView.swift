@@ -21,8 +21,9 @@ struct ContentView: View {
     // What voice to use for speech
     @State private var voiceToUse: AVSpeechSynthesisVoice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")!
     
-    // The position of the Samantha voice in the list of voices for use with English
-    @State private var selectedVoice: Int = 11
+    // The position of the Samantha voice in the list of voices for use with English, when sorted
+    // NOTE: This is not awesome 
+    @State private var selectedVoice: Int = 12
     
     // The welcome message
     @State private var welcome = ""

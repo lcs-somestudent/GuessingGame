@@ -41,6 +41,9 @@ struct Settings: View {
             return false
         }
     }
+    .sorted(by: { (voice1, voice2) -> Bool in
+        return voice1.name < voice2.name
+    })
     
     // Used to dismiss this sheet when user is finished
     @Environment(\.presentationMode) var presentationMode

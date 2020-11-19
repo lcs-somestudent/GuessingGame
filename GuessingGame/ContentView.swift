@@ -19,14 +19,14 @@ struct ContentView: View {
     @State private var utterance = AVSpeechUtterance()
     
     // The welcome message
-    private let welcome = "I'm thinking of a number between 1 and 100. Guess what it is!"
+    @State private var welcome = ""
         
     // The number that the user should guess
     @State private var target = Int.random(in: 1...100)
     
     // Feedback to the user
     @State private var feedback = ""
-    
+
     // The current guess made by the user
     @State private var theUserGuess = ""
 
@@ -36,8 +36,15 @@ struct ContentView: View {
     // Keep track of whether game is over
     @State private var gameOver = false
     
-    // Show a sheet for controlling settings
+    // Whether to show a sheet for controlling settings
     @State private var showingSettings = false
+    
+    // Whether to speak feedback
+    @State private var speakingFeedback = true
+
+    // Maximum range for guesses
+    @State private var maximumValue: Float = 100
+    @State private var priorMaximumValue: Float = 100
     
     var body: some View {
         
@@ -74,7 +81,7 @@ struct ContentView: View {
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .multilineTextAlignment(.center)
                 }
-                
+
                 // Only show the new game button when the current game is over
                 if gameOver {
                     
@@ -86,7 +93,6 @@ struct ContentView: View {
                     
                 }
                 
-
                 Spacer()
                 
             }
@@ -103,14 +109,37 @@ struct ContentView: View {
                 }
             }
             .onAppear() {
+                
+                // Set the welcome value
+                welcome = "I'm thinking of a number between 1 and \(Int(maximumValue)). Guess what it is!"
 
                 // Speak the welcome message
                 say(message: welcome)
             }
             
         }
-        .sheet(isPresented: $showingSettings) {
-            Settings()
+        .sheet(isPresented: $showingSettings, onDismiss: {
+
+//            print("maximumValue is \(maximumValue)")
+//            print("are we speaking feedback? \(speakingFeedback)")
+
+            if maximumValue != priorMaximumValue {
+                
+                // Set the welcome message again
+                welcome = "I'm thinking of a number between 1 and \(Int(maximumValue)). Guess what it is!"
+                
+                // Reset the game
+                resetGame()
+                
+                // Update prior maximum
+                priorMaximumValue = maximumValue
+
+            }
+            
+            
+        }) {
+            Settings(speakingFeedback: $speakingFeedback,
+                     maximumValue: $maximumValue)
         }
         
     }
@@ -120,11 +149,11 @@ struct ContentView: View {
         
         // See if the user gave us an integer in the expected range
         guard let givenInteger = Int(theUserGuess) else {
-            feedback = "Please provide an integer between 1 and 100."
+            feedback = "Please provide an integer between 1 and \(Int(maximumValue))."
             return
         }
-        guard givenInteger > 0, givenInteger < 101 else {
-            feedback = "Please provide an integer between 1 and 100."
+        guard givenInteger > 0, givenInteger < Int(maximumValue) + 1 else {
+            feedback = "Please provide an integer between 1 and \(Int(maximumValue))."
             return
         }
         
@@ -153,7 +182,7 @@ struct ContentView: View {
     func resetGame() {
         
         // Pick a new number
-        target = Int.random(in: 1...100)
+        target = Int.random(in: 1...Int(maximumValue))
         
         // Reset the guess
         theUserGuess = ""
@@ -169,12 +198,16 @@ struct ContentView: View {
     
     // Say something
     func say(message: String) {
-
-        // Set the phrase that will be read aloud
-        utterance = AVSpeechUtterance(string: message)
         
-        // Speak the message
-        synthesizer.speak(utterance)
+        if speakingFeedback {
+
+            // Set the phrase that will be read aloud
+            utterance = AVSpeechUtterance(string: message)
+            
+            // Speak the message
+            synthesizer.speak(utterance)
+
+        }
 
     }
 }

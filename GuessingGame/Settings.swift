@@ -64,6 +64,7 @@ struct Settings: View {
                                    maximumValueLabel: Text("1000")) {
                                 
                             }
+                            
                         }
                         
                         Text("Guess values between 1 and \(Int(maximumValue)).")
